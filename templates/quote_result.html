@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}Quote Result{% endblock %}
+
+{% block content %}
+    <div style="background-color: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1); max-width: 600px; margin: 60px auto; border: 1px solid #eee;">
+        <h2 style="color: #333; text-align: center; font-size: 32px; margin-bottom: 30px; font-weight: bold; text-transform: uppercase;">Your {{ insurance_type }} Quote</h2>
+        <p style="font-size: 28px; color: #007bff; text-align: center; margin-bottom: 30px; font-weight: bold;">Premium: ₹{{ premium }}</p>
+        <h3 style="color: #333; font-size: 24px; margin-top: 20px; margin-bottom: 15px; border-bottom: 2px solid #007bff; padding-bottom: 5px;">Details:</h3>
+        <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+            {% for key, value in details.items() %}
+            <li style="font-size: 18px; color: #666; margin-bottom: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                <strong style="color: #333;">{{ key }}:</strong> {{ value }}
+            </li>
+            {% endfor %}
+        </ul>
+        <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 20px;">
+            <a href="{{ url_for('buy_policy', insurance_type=insurance_type) }}" style="padding: 12px 40px; background-color: #28a745; color: white; text-decoration: none; border-radius: 6px; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s;">Buy Now</a>
+            <a href="{{ url_for('quotes') }}" style="padding: 12px 40px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 6px; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s;">Back</a>
+        </div>
+        <div style="margin-top: 30px; text-align: center;">
+            <p style="color: #666; font-size: 16px;">Happy with your quote?</p>
+            <p style="color: #555; font-size: 14px;">Proceed to purchase or adjust your details.</p>
+        </div>
+        <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+            <p style="font-size: 14px; color: #777;">Quote valid for 30 days</p>
+        </div>
+        <div style="margin-top: 20px; background-color: #f1f3f5; padding: 15px; border-radius: 5px;">
+            <p style="margin: 0; font-size: 14px; color: #555;">Secure transaction guaranteed</p>
+        </div>
+        <div style="margin-top: 20px;">
+            <span style="font-size: 16px; color: #333;">Need help?</span>
+            <a href="{{ url_for('contact') }}" style="color: #007bff; text-decoration: none; font-size: 16px; margin-left: 10px;">Contact us</a>
+        </div>
+    </div>
+{% endblock %}

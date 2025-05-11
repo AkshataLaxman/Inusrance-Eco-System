@@ -1,0 +1,201 @@
+{% extends 'layout.html' %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<style>
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Headings */
+h1 {
+    color: #1E3A8A; /* Dark Blue */
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h2 {
+    color: #2563EB; /* Medium Blue */
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+h3 {
+    color: #3B82F6; /* Lighter Blue */
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+h5 {
+    color: #1E40AF; /* Deep Blue */
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Text */
+p {
+    color: #4B5563;
+    margin-bottom: 1rem;
+}
+
+.lead {
+    font-size: 1.25rem;
+    color: #1E3A8A;
+}
+
+/* Cards */
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-text.text-muted {
+    color: #60A5FA !important; /* Light Blue */
+}
+
+/* Images */
+.img-fluid {
+    border: 3px solid #BFDBFE; /* Very Light Blue */
+}
+
+/* List Styles */
+ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Icons */
+.text-primary {
+    color: #2563EB !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Custom Classes */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mb-5 {
+    margin-bottom: 3rem !important;
+}
+
+/* Button Styles (if you add any later) */
+.btn-primary {
+    background-color: #2563EB;
+    border-color: #2563EB;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1E40AF;
+    border-color: #1E40AF;
+}
+</style>
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h1 class="mb-4">About Insurance Clone</h1>
+            <p class="lead">Insurance Clone is a modern, customer-focused
+                insurance provider committed to making insurance simple,
+                affordable, and hassle-free.</p>
+
+            <p>Founded in 2020, Insurance Clone has quickly grown to become one
+                of India's leading digital insurance companies. We leverage
+                technology to eliminate paperwork, reduce costs, and provide a
+                seamless experience from quote to claim.</p>
+
+            <p>Our mission is to revolutionize the insurance industry by:</p>
+            <ul>
+                <li>Simplifying the insurance buying process</li>
+                <li>Offering transparent pricing with no hidden charges</li>
+                <li>Providing instant policy issuance</li>
+                <li>Delivering hassle-free claims</li>
+                <li>Offering 24/7 customer support</li>
+            </ul>
+
+            <p>We are backed by leading investors and are regulated by the
+                Insurance Regulatory and Development Authority of India
+                (IRDAI).</p>
+        </div>
+        <div class="col-md-4">
+            <img src="/static/h.png" alt="Insurance Clone Office"
+                class="img-fluid rounded">
+        </div>
+    </div>
+
+    <h2 class="mb-4">Our Values</h2>
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h3>Trust</h3>
+                    <p>We build lasting relationships with our customers based
+                        on trust and transparency.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-bolt fa-3x text-primary mb-3"></i>
+                    <h3>Innovation</h3>
+                    <p>We constantly innovate to improve our products and
+                        customer experience.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h3>Customer First</h3>
+                    <p>We put our customers at the center of everything we
+                        do.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends 'layout.html' %}
+
+{% block title %}Claim Details{% endblock %}
+
+{% block content %}
+    <style>
+        /* Custom CSS for claim_detail.html */
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            font-weight: 600;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 15px;
+            font-weight: 500;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .badge {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+        }
+        .list-group-item {
+            border: none;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+        .list-group-item:hover {
+            transform: translateY(-3px);
+        }
+        .list-group-item-warning {
+            background-color: #fff3cd;
+        }
+        .list-group-item-success {
+            background-color: #d4edda;
+        }
+        .list-group-item-danger {
+            background-color: #f8d7da;
+        }
+        hr {
+            margin: 20px 0;
+            border-color: #ddd;
+        }
+        p strong {
+            color: #555;
+        }
+        .text-muted {
+            font-style: italic;
+        }
+        @media (max-width: 767px) {
+            .col-md-8, .col-md-4 {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="mb-4">Claim Details</h1>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Claim #{{ claim.claim_number }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Policy Number:</strong> {{ claim.policy.policy_number }}</p>
+                            <p><strong>Policy Type:</strong> {{ claim.policy.policy_type }}</p>
+                            <p><strong>Date of Incident:</strong> {{ claim.date_of_incident.strftime('%d-%m-%Y') }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Amount Claimed:</strong> ₹{{ claim.amount_claimed }}</p>
+                            <p><strong>Submitted On:</strong> {{ claim.submitted_at.strftime('%d-%m-%Y') }}</p>
+                            <p><strong>Status:</strong>
+                                <span class="badge 
+                                    {{ 'bg-warning' if claim.status == 'Processing' else 
+                                       'bg-success' if claim.status == 'Approved' else
+                                       'bg-danger' }}">
+                                    {{ claim.status }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5>Incident Description</h5>
+                    <p>{{ claim.description }}</p>
+                    
+                    <div class="mt-4">
+                        <a href="{{ url_for('claims') }}" class="btn btn-secondary">Back to Claims</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Claim Timeline</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Claim Filed</h6>
+                                <small>{{ claim.submitted_at.strftime('%d-%m-%Y') }}</small>
+                            </div>
+                            <small>Your claim has been submitted successfully.</small>
+                        </li>
+                        <li class="list-group-item {{ 'list-group-item-warning' if claim.status == 'Processing' else '' }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Under Review</h6>
+                                <small>{{ (claim.submitted_at.replace(day=claim.submitted_at.day+1)).strftime('%d-%m-%Y') }}</small>
+                            </div>
+                            <small>Your claim is being reviewed by our team.</small>
+                        </li>
+                        {% if claim.status != 'Processing' %}
+                            <li class="list-group-item {{ 'list-group-item-success' if claim.status == 'Approved' else 'list-group-item-danger' }}">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ claim.status }}</h6>
+                                    <small>{{ (claim.submitted_at.replace(day=claim.submitted_at.day+3)).strftime('%d-%m-%Y') }}</small>
+                                </div>
+                                <small>
+                                    {% if claim.status == 'Approved' %}
+                                        Your claim has been approved. Payment will be processed shortly.
+                                    {% else %}
+                                        Your claim has been rejected. Please contact support for more information.
+                                    {% endif %}
+                                </small>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Uploaded Documents</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">No documents uploaded yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom JavaScript for claim_detail.html
+        document.addEventListener('DOMContentLoaded', function () {
+            // Highlight status badge on load
+            const statusBadge = document.querySelector('.badge');
+            if (statusBadge) {
+                statusBadge.style.transition = 'all 0.5s ease';
+                statusBadge.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    statusBadge.style.transform = 'scale(1)';
+                }, 500);
+            }
+
+            // Add hover effect to timeline items
+            const timelineItems = document.querySelectorAll('.list-group-item');
+            timelineItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.backgroundColor = '#f1f3f5';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.backgroundColor = item.classList.contains('list-group-item-warning') ? '#fff3cd' :
+                                                 item.classList.contains('list-group-item-success') ? '#d4edda' :
+                                                 item.classList.contains('list-group-item-danger') ? '#f8d7da' : '#fff';
+                });
+            });
+
+            // Back button confirmation
+            const backButton = document.querySelector('.btn-secondary');
+            backButton.addEventListener('click', (e) => {
+                if (!confirm('Are you sure you want to go back to the claims list?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+{% endblock %}

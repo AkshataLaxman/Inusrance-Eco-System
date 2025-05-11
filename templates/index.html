@@ -1,0 +1,202 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Custom CSS for index.html */
+        .bg-primary {
+            background-color: #007bff !important;
+        }
+        .hero-section {
+            border-radius: 8px;
+            padding: 5rem 2rem;
+            transition: background-color 0.3s ease;
+        }
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .btn-light {
+            background-color: #fff;
+            color: #007bff;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .btn-light:hover {
+            background-color: #f1f3f5;
+            transform: translateY(-2px);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+        .card-text {
+            color: #666;
+        }
+        .btn-outline-primary {
+            padding: 8px 20px;
+            border-width: 2px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .bg-light {
+            background-color: #f8f9fa !important;
+            border-radius: 8px;
+        }
+        .testimonial-card {
+            background-color: transparent;
+            border: none;
+        }
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+        }
+        .stats h2 {
+            font-size: 2.5rem;
+            color: #007bff;
+        }
+        .stats p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        @media (max-width: 767px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            .hero-section p {
+                font-size: 1.2rem;
+            }
+            .card {
+                margin-bottom: 20px;
+            }
+            .stats h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <div class="bg-primary text-white p-5 rounded-3 mb-4 hero-section">
+        <div class="container py-5">
+            <h1 class="display-5 fw-bold">Insurance Made Simple</h1>
+            <p class="fs-4">Get quotes, buy policies, and manage your insurance all in one place.</p>
+            <a href="{{ url_for('quotes') }}" class="btn btn-light btn-lg">Get a Quote Now</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-car fa-3x text-primary mb-3"></i>
+                    <h3 class="card-title">Vehicle Insurance</h3>
+                    <p class="card-text">Comprehensive coverage for your car, bike, or commercial vehicle with zero paperwork.</p>
+                    <a href="{{ url_for('vehicle_quote') }}" class="btn btn-outline-primary">Get Quote</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-heartbeat fa-3x text-primary mb-3"></i>
+                    <h3 class="card-title">Health Insurance</h3>
+                    <p class="card-text">Flexible health plans for individuals and families with cashless claim settlements.</p>
+                    <a href="{{ url_for('health_quote') }}" class="btn btn-outline-primary">Get Quote</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
+                    <h3 class="card-title">Easy Claims</h3>
+                    <p class="card-text">Hassle-free and quick claim settlement process with 24/7 customer support.</p>
+                    <a href="{{ url_for('file_claim') }}" class="btn btn-outline-primary">File Claim</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Custom JavaScript for index.html
+        document.addEventListener('DOMContentLoaded', function () {
+            // Animate hero section button on hover
+            const heroButton = document.querySelector('.btn-light');
+            heroButton.addEventListener('mouseenter', () => {
+                heroButton.style.transform = 'scale(1.05)';
+            });
+            heroButton.addEventListener('mouseleave', () => {
+                heroButton.style.transform = 'scale(1)';
+            });
+
+            // Fade in cards on scroll
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+
+            // Animate stats on scroll
+            const stats = document.querySelectorAll('.stats h2');
+            stats.forEach(stat => {
+                stat.style.opacity = '0';
+                stat.style.transition = 'opacity 0.5s ease';
+            });
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        stats.forEach((stat, index) => {
+                            setTimeout(() => {
+                                stat.style.opacity = '1';
+                            }, index * 200);
+                        });
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            statsObserver.observe(document.querySelector('.stats'));
+        });
+    </script>
+{% endblock %}

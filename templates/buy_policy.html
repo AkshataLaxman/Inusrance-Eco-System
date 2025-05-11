@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+
+{% block title %}Buy {{ insurance_type }} Policy{% endblock %}
+
+{% block content %}
+    <div style="background-color: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1); max-width: 700px; margin: 60px auto; border: 1px solid #eee;">
+        <h2 style="color: #333; text-align: center; font-size: 32px; margin-bottom: 30px; font-weight: bold; text-transform: uppercase;">Buy {{ insurance_type }} Insurance</h2>
+        <p style="color: #666; text-align: center; font-size: 18px; margin-bottom: 30px;">Complete the details below to purchase your policy.</p>
+        
+        <form method="POST" action="{{ url_for('buy_policy', insurance_type=insurance_type) }}" style="display: flex; flex-direction: column; gap: 20px;">
+            {% if insurance_type == 'Vehicle' %}
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Vehicle Make:</label>
+                    <input type="text" name="make" placeholder="e.g., Toyota" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Vehicle Model:</label>
+                    <input type="text" name="model" placeholder="e.g., Corolla" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Year:</label>
+                    <input type="number" name="year" placeholder="e.g., 2020" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Registration Number:</label>
+                    <input type="text" name="registration" placeholder="e.g., ABC-1234" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+                </div>
+            {% elif insurance_type == 'Health' %}
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Age:</label>
+                    <input type="number" name="age" placeholder="e.g., 30" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Gender:</label>
+                    <select name="gender" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+                        <option value="Male" style="padding: 10px;">Male</option>
+                        <option value="Female" style="padding: 10px;">Female</option>
+                        <option value="Other" style="padding: 10px;">Other</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Medical History (optional):</label>
+                    <textarea name="medical_history" placeholder="Any past conditions" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; min-height: 120px; transition: border-color 0.3s;"></textarea>
+                </div>
+            {% endif %}
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-size: 18px; color: #555; margin-bottom: 8px;">Premium Amount (₹):</label>
+                <input type="number" name="premium" placeholder="Enter premium" required style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 6px; background-color: #f8f9fa; transition: border-color 0.3s;">
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="submit" style="padding: 12px 40px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: background-color 0.3s, transform 0.2s;">Purchase Policy</button>
+            </div>
+        </form>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <p style="color: #666; font-size: 16px;">Review your details before submitting.</p>
+            <a href="{{ url_for('quotes') }}" style="color: #6c757d; text-decoration: none; font-size: 16px; margin-top: 10px; display: inline-block;">Back to Quotes</a>
+        </div>
+        <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px; text-align: center;">
+            <p style="font-size: 14px; color: #777;">Secure payment process</p>
+        </div>
+        <div style="margin-top: 20px; background-color: #f1f3f5; padding: 15px; border-radius: 5px; text-align: center;">
+            <p style="margin: 0; font-size: 14px; color: #555;">Your policy will be active immediately upon purchase.</p>
+        </div>
+        <div style="margin-top: 20px; text-align: center;">
+            <span style="font-size: 16px; color: #333;">Need assistance?</span>
+            <a href="{{ url_for('contact') }}" style="color: #007bff; text-decoration: none; font-size: 16px; margin-left: 10px;">Contact Support</a>
+        </div>
+        <div style="margin-top: 20px; padding: 10px; background-color: #e9ecef; border-radius: 5px; text-align: center;">
+            <p style="margin: 0; font-size: 14px; color: #555;">All transactions are encrypted.</p>
+        </div>
+        <div style="margin-top: 20px; text-align: center;">
+            <p style="font-size: 14px; color: #777;">Customer support available 24/7.</p>
+        </div>
+        <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px; text-align: center;">
+            <p style="font-size: 14px; color: #777;">Powered by Insurance App</p>
+        </div>
+    </div>
+{% endblock %}

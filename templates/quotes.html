@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}Insurance Quotes{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 60px 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+        <h1 style="color: #333; font-size: 40px; margin-bottom: 20px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Get Your Insurance Quote</h1>
+        <p style="color: #666; font-size: 20px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Choose an insurance type to receive a personalized quote tailored to your needs.</p>
+        <div style="margin: 40px 0;">
+            <a href="{{ url_for('get_quote') }}" style="display: inline-block; padding: 15px 40px; background-color: #007bff; color: white; text-decoration: none; border-radius: 8px; font-size: 20px; font-weight: bold; transition: background-color 0.3s, transform 0.2s;">Get Started</a>
+        </div>
+        <div style="margin-top: 50px; display: flex; justify-content: center; gap: 30px;">
+            <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 250px;">
+                <h3 style="color: #007bff; font-size: 24px; margin-bottom: 15px;">Vehicle Insurance</h3>
+                <p style="color: #555; font-size: 16px;">Protect your car with comprehensive coverage.</p>
+            </div>
+            <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 250px;">
+                <h3 style="color: #007bff; font-size: 24px; margin-bottom: 15px;">Health Insurance</h3>
+                <p style="color: #555; font-size: 16px;">Secure your health with affordable plans.</p>
+            </div>
+        </div>
+        <div style="margin-top: 40px; border-top: 1px solid #ddd; padding-top: 20px;">
+            <p style="color: #777; font-size: 14px; font-style: italic;">Fast. Simple. Reliable.</p>
+        </div>
+        <div style="margin-top: 30px;">
+            <span style="font-size: 16px; color: #333;">Need help? Call us at:</span>
+            <span style="font-size: 16px; color: #007bff; font-weight: bold;">+1-800-555-1234</span>
+        </div>
+        <div style="margin-top: 20px; padding: 10px; background-color: #e9ecef; border-radius: 5px; display: inline-block;">
+            <p style="margin: 0; font-size: 14px; color: #555;">Quotes generated instantly!</p>
+        </div>
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('contact') }}" style="color: #007bff; text-decoration: none; font-size: 16px;">Contact Support</a>
+        </div>
+    </div>
+{% endblock %}

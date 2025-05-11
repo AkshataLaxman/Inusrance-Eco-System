@@ -1,0 +1,190 @@
+{% extends 'layout.html' %}
+
+{% block title %}Policy Details{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Policy Details</h1>
+        <div>
+            <a href="{{ url_for('policies') }}" class="btn btn-outline-primary me-2">Back to Policies</a>
+            {% if policy.status == 'Active' %}
+                <a href="{{ url_for('file_claim') }}" class="btn btn-primary">File a Claim</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Policy Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th>Policy Number:</th>
+                                <td>{{ policy.policy_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>Policy Type:</th>
+                                <td>{{ policy.policy_type }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>
+                                    <span class="badge {{ 'bg-success' if policy.status == 'Active' else 'bg-danger' }}">
+                                        {{ policy.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Premium:</th>
+                                <td>₹{{ policy.premium }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th>Start Date:</th>
+                                <td>{{ policy.start_date.strftime('%d-%m-%Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>End Date:</th>
+                                <td>{{ policy.end_date.strftime('%d-%m-%Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Coverage Amount:</th>
+                                <td>₹{{ policy.coverage_amount }}</td>
+                            </tr>
+                            <tr>
+                                <th>Policy Holder:</th>
+                                <td>{{ policy.policyholder.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if policy.policy_type == 'Vehicle' and policy.vehicle_details %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Vehicle Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>Make:</th>
+                                    <td>{{ policy.vehicle_details.make }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Model:</th>
+                                    <td>{{ policy.vehicle_details.model }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Year:</th>
+                                    <td>{{ policy.vehicle_details.year }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Registration Number:</th>
+                                    <td>{{ policy.vehicle_details.registration_number }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elif policy.policy_type == 'Health' and policy.health_details %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Health Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>Age:</th>
+                                    <td>{{ policy.health_details.age }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gender:</th>
+                                    <td>{{ policy.health_details.gender }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Medical History:</th>
+                                    <td>{{ policy.health_details.medical_history or 'None' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Claims History</h5>
+        </div>
+        <div class="card-body">
+            {% if policy.claims %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Claim Number</th>
+                                <th>Date of Incident</th>
+                                <th>Amount Claimed</th>
+                                <th>Status</th>
+                                <th>Submitted On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for claim in policy.claims %}
+                                <tr>
+                                    <td>{{ claim.claim_number }}</td>
+                                    <td>{{ claim.date_of_incident.strftime('%d-%m-%Y') }}</td>
+                                    <td>₹{{ claim.amount_claimed }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if claim.status == 'Approved' %}
+                                                bg-success
+                                            {% elif claim.status == 'Rejected' %}
+                                                bg-danger
+                                            {% else %}
+                                                bg-warning text-dark
+                                            {% endif %}
+                                        ">
+                                            {{ claim.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ claim.submitted_at.strftime('%d-%m-%Y') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('claim_detail', claim_id=claim.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No claims have been filed for this policy.</p>
+                {% if policy.status == 'Active' %}
+                    <a href="{{ url_for('file_claim') }}" class="btn btn-outline-primary">File a Claim</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,257 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Custom CSS for dashboard.html */
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            font-weight: 600;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 15px;
+            font-weight: 500;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .table-responsive {
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .table {
+            margin-bottom: 0;
+            background-color: #fff;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f3f5;
+            transition: background-color 0.3s ease;
+        }
+        .table th, .table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+        .badge {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.875rem;
+        }
+        .btn-outline-primary {
+            border-width: 2px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .fa-2x {
+            color: #007bff;
+        }
+        .btn-outline-primary:hover .fa-2x {
+            color: #fff;
+        }
+        @media (max-width: 767px) {
+            .col-md-6 {
+                margin-bottom: 20px;
+            }
+            .btn-outline-primary {
+                padding: 10px !important;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+
+    <h1 class="mb-4">Welcome, {{ user.name }}</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Your Policies</h5>
+                </div>
+                <div class="card-body">
+                    {% if policies %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Policy Number</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Expiry</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for policy in policies %}
+                                        <tr>
+                                            <td>{{ policy.policy_number }}</td>
+                                            <td>{{ policy.policy_type }}</td>
+                                            <td>
+                                                <span class="badge {{ 'bg-success' if policy.status == 'Active' else 'bg-danger' }}">
+                                                    {{ policy.status }}
+                                                </span>
+                                            </td>
+                                            <td>{{ policy.end_date.strftime('%d-%m-%Y') }}</td>
+                                            <td>
+                                                <a href="{{ url_for('policy_detail', policy_id=policy.id) }}" class="btn btn-sm btn-primary">View</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="{{ url_for('quotes') }}" class="btn btn-primary mt-3">Buy New Policy</a>
+                    {% else %}
+                        <p>You don't have any policies yet.</p>
+                        <a href="{{ url_for('quotes') }}" class="btn btn-primary">Get Your First Policy</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recent Claims</h5>
+                </div>
+                <div class="card-body">
+                    {% if claims %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Claim Number</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for claim in claims %}
+                                        <tr>
+                                            <td>{{ claim.claim_number }}</td>
+                                            <td>{{ claim.date_of_incident.strftime('%d-%m-%Y') }}</td>
+                                            <td>₹{{ claim.amount_claimed }}</td>
+                                            <td>
+                                                <span class="badge 
+                                                    {{ 'bg-warning' if claim.status == 'Processing' else 
+                                                       'bg-success' if claim.status == 'Approved' else
+                                                       'bg-danger' }}">
+                                                    {{ claim.status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="{{ url_for('claim_detail', claim_id=claim.id) }}" class="btn btn-sm btn-primary">View</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="{{ url_for('file_claim') }}" class="btn btn-primary mt-3">File New Claim</a>
+                    {% else %}
+                        <p>You don't have any claims yet.</p>
+                        <a href="{{ url_for('file_claim') }}" class="btn btn-primary">File a Claim</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('quotes') }}" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-plus-circle mb-2 d-block fa-2x"></i>
+                                Get New Quote
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('file_claim') }}" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-file-alt mb-2 d-block fa-2x"></i>
+                                File a Claim
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('policies') }}" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-clipboard-list mb-2 d-block fa-2x"></i>
+                                View All Policies
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('profile') }}" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-user-cog mb-2 d-block fa-2x"></i>
+                                Update Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom JavaScript for dashboard.html
+        document.addEventListener('DOMContentLoaded', function () {
+            // Highlight expiring policies (within 30 days)
+            const today = new Date();
+            const thirtyDaysFromNow = new Date(today.setDate(today.getDate() + 30));
+            document.querySelectorAll('.table tbody tr').forEach(row => {
+                const expiryCell = row.querySelector('td:nth-child(4)');
+                if (expiryCell) {
+                    const expiryDate = new Date(expiryCell.textContent.split('-').reverse().join('-'));
+                    if (expiryDate <= thirtyDaysFromNow) {
+                        row.style.backgroundColor = '#fff3cd';
+                        row.style.transition = 'background-color 0.5s ease';
+                        setTimeout(() => row.style.backgroundColor = '', 2000);
+                    }
+                }
+            });
+
+            // Animate Quick Action buttons on hover
+            const quickActionButtons = document.querySelectorAll('.btn-outline-primary');
+            quickActionButtons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.querySelector('i').style.transform = 'scale(1.2)';
+                });
+                button.addEventListener('mouseleave', () => {
+                    button.querySelector('i').style.transform = 'scale(1)';
+                });
+            });
+
+            // Button click effect for View buttons
+            const viewButtons = document.querySelectorAll('.btn-sm');
+            viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.style.transform = 'scale(0.95)';
+                    setTimeout(() => button.style.transform = 'scale(1)', 100);
+                });
+            });
+        });
+    </script>
+{% endblock %}

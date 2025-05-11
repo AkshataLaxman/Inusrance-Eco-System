@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mb-4">Contact Us</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Send us a message</h5>
+                        <form method="POST" action="{{ url_for('contact') }}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ session.user_name if 'user_name' in session else '' }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ user_email }}" {% if user_email %}readonly{% endif %} required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="" selected disabled>Select a subject</option>
+                                    <option value="policy">Policy Inquiry</option>
+                                    <option value="claim">Claim Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Contact Information</h5>
+                        <p><i class="fas fa-map-marker-alt me-2 text-primary"></i>Electronic City,Bengaluru,560056</p>
+                        <p><i class="fas fa-phone me-2 text-primary"></i> +91 1234569874</p>
+                        <p><i class="fas fa-envelope me-2 text-primary"></i> info@insurance.com</p>
+                        
+                        <h5 class="card-title mt-4">Customer Support</h5>
+                        <p><i class="fas fa-headset me-2 text-primary"></i> +91 9876543215</p>
+                        <p><i class="fas fa-envelope me-2 text-primary"></i> support@insurance.com</p>
+                        <p><i class="fas fa-clock me-2 text-primary"></i> 24/7 Customer Support</p>
+                        
+                        <h5 class="card-title mt-4">Claims Support</h5>
+                        <p><i class="fas fa-phone me-2 text-primary"></i> +91 8765432109</p>
+                        <p><i class="fas fa-envelope me-2 text-primary"></i> claims@insurance.com</p>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
